@@ -2,6 +2,8 @@
 
 ThreatTracker is a Python script that helps you stay up-to-date with the latest trends in cyber attacks, vulnerabilities, and threat actors by monitoring threat intelligence sources and displaying the top 5 articles.
 
+![image](https://user-images.githubusercontent.com/3386569/220716272-209744d5-0a07-4950-931f-2cb09146b37e.png)
+
 ## Installation
 
 1. Clone the repository:
