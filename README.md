@@ -9,7 +9,7 @@ ThreatTracker is a Python script that helps you stay up-to-date with the latest 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/ThreatTracker.git
+   git clone https://github.com/cyphercut/ThreatTracker.git
    ```
 
 2. Install the required packages:
