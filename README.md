@@ -4,6 +4,10 @@ ThreatTracker is a Python script that helps you stay up-to-date with the latest 
 
 ![image](https://user-images.githubusercontent.com/3386569/220716272-209744d5-0a07-4950-931f-2cb09146b37e.png)
 
+Modified by ShadowDev
+
+<a href="https://www.buymeacoffee.com/notarealdev" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;" ></a>
+
 ## Installation
 
 1. Clone the repository:
