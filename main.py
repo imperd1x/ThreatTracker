@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+import os
+import sys
+import time
 import requests
 import feedparser
 import argparse
@@ -37,6 +40,7 @@ def main():
     parser.add_argument('-f', '--output-format', choices=['text', 'html', 'json'], default='text', help='Output format (default: text)')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose logging')
     parser.add_argument('-k', '--keyword', nargs='+', help='Keywords to search for in article titles')
+    parser.add_argument('-t', '--timer', type=int, default=0, help='Timer to refresh the articles in minutes (default: 0)')
     args = parser.parse_args()
 
     # Configure logging
@@ -92,6 +96,18 @@ def main():
     elif args.output_format == 'json':
         import json
         print(json.dumps([{'title': a.title, 'link': a.link} for a in articles], indent=4))
+
+    # If timer is specified, wait for the specified time and refresh the articles
+    if args.timer:
+        logging.info(f"Waiting for {args.timer} minutes...")
+        try:
+            while True:
+                time.sleep(args.timer * 60)                         # convert minutes to seconds
+                os.system('cls' if os.name == 'nt' else 'clear')    # Clear the screen
+                main()                                              # call main function to fetch and display updated articles
+        except KeyboardInterrupt:
+            logging.info("Timer stopped by user.")
+            sys.exit(0)
 
 if __name__ == '__main__':
     main()
