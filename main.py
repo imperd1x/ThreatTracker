@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import re
 import feedparser
 import argparse
 import logging
@@ -15,7 +16,6 @@ urls = [
     'https://www.securityweek.com/rss',
     'https://krebsonsecurity.com/feed',
     'https://www.darkreading.com/rss.xml',
-    'https://www.darkreading.com/rss_simple.asp',
     'https://feeds.feedburner.com/TheHackersNews',
     'https://nakedsecurity.sophos.com/feed',
     'https://www.bleepingcomputer.com/feed/'
@@ -32,6 +32,7 @@ def main():
     parser.add_argument('-n', '--num-articles', type=int, default=5, help='Number of articles to display (default: 5)')
     parser.add_argument('-f', '--output-format', choices=['text', 'html', 'json'], default='text', help='Output format (default: text)')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose logging')
+    parser.add_argument('-k', '--keyword', nargs='+', help='Keywords to search for in article titles')
     args = parser.parse_args()
 
     # Configure logging
@@ -57,9 +58,13 @@ def main():
     articles.sort(key=lambda x: x.published_parsed, reverse=True)
 
     # Filter the articles by keyword, if specified
-    keyword = 'security'
-    if keyword:
-        articles = [a for a in articles if keyword in a.title.lower()]
+    keywords = args.keyword
+    if keywords:
+        if isinstance(keywords, list):
+            keywords = ','.join(keywords)
+        keywords = keywords.lower().split(',')
+        articles = [a for a in articles if any(kw in a.title.lower() for kw in keywords)]
+
 
     # Limit the number of articles to display
     articles = articles[:args.num_articles]
