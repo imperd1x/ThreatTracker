@@ -48,3 +48,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
    - add_argument method defines -n/--num_articles argument that takes integer value with default of 5.
    - help parameter provides brief description of argument displayed with -h/--help option.
    - Value of argument retrieved using args.num_articles attribute.
+  
+## Do you like this project?
+<a href="https://www.buymeacoffee.com/cyphercut" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;" ></a>
