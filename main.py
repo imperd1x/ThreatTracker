@@ -21,12 +21,15 @@ urls = [
     'https://www.bleepingcomputer.com/feed/'
 ]
 
-# Define colors for the output
-TITLE_COLOR = Fore.CYAN
-LINK_COLOR = Fore.YELLOW
-RESET_COLOR = Style.RESET_ALL
-
 def main():
+    # Define colors for the output
+    TITLE_COLOR = Fore.CYAN
+    LINK_COLOR = Fore.YELLOW
+    RESET_COLOR = Style.RESET_ALL
+
+    # Define the user-agent
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+
     # Configure argument parser
     parser = argparse.ArgumentParser(description='Display recent articles from security news feeds.')
     parser.add_argument('-n', '--num-articles', type=int, default=5, help='Number of articles to display (default: 5)')
@@ -44,7 +47,7 @@ def main():
     # Parse the RSS feeds
     articles = []
     for url in urls:
-        feed = feedparser.parse(url)
+        feed = feedparser.parse(url, request_headers={'User-Agent': user_agent})
         if feed.bozo:
             logging.warning(f'Unable to parse feed: {url}')
             continue
