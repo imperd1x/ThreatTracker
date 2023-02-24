@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
-import re
+import requests
 import feedparser
 import argparse
 import logging
+from tqdm import tqdm
 from colorama import Fore, Style
 
 # Define the feed URLs
@@ -44,18 +45,24 @@ def main():
     else:
         logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-    # Parse the RSS feeds
+    # Fetch the RSS feeds
     articles = []
-    for url in urls:
-        feed = feedparser.parse(url, request_headers={'User-Agent': user_agent})
-        if feed.bozo:
-            logging.warning(f'Unable to parse feed: {url}')
-            continue
-        for entry in feed.entries:
-            if 'title' not in entry or 'link' not in entry:
-                logging.warning(f'Missing title or link in entry: {entry}')
+    for url in tqdm(urls, desc='Fetching feeds'):
+        try:
+            response = requests.get(url, headers={'User-Agent': user_agent})
+            response.raise_for_status()
+            feed = feedparser.parse(response.text)
+            if feed.bozo:
+                logging.warning(f'Unable to parse feed: {url}')
                 continue
-            articles.append(entry)
+            for entry in feed.entries:
+                if 'title' not in entry or 'link' not in entry:
+                    logging.warning(f'Missing title or link in entry: {entry}')
+                    continue
+                articles.append(entry)
+        except requests.exceptions.RequestException as e:
+            logging.warning(f'Unable to fetch feed: {url}, {str(e)}')
+            continue
 
     # Sort the articles by date
     articles.sort(key=lambda x: x.published_parsed, reverse=True)
@@ -67,7 +74,6 @@ def main():
             keywords = ','.join(keywords)
         keywords = keywords.lower().split(',')
         articles = [a for a in articles if any(kw in a.title.lower() for kw in keywords)]
-
 
     # Limit the number of articles to display
     articles = articles[:args.num_articles]
